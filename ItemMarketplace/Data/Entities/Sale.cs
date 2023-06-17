@@ -15,7 +15,9 @@ namespace Data.Entities
         public decimal Price { get; set; }
         public int StatusId { get; set; }
         public virtual MarketStatus Status { get; set; }
-        public string Seller { get; set; }
-        public string Buyer { get; set; }
+        public int SellerId { get; set; }
+        public virtual User Seller { get; set; }
+        public int BuyerId { get; set; }
+        public virtual User Buyer { get; set; }
     }
 }
