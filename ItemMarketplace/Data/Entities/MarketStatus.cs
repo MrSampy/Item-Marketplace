@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace Data.Entities
 {
     public class MarketStatus: BaseEntity
-    {
+    {        
         public string StatusName { get; set; }
-        public virtual List<Sale> Sales { get; set; }
+        public virtual ICollection<Sale> Sales { get; set; }
 
     }
 }
