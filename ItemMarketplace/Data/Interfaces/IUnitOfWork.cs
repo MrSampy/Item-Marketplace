@@ -12,5 +12,7 @@ namespace Data.Interfaces
         IRepository<MarketStatus> MarketStatusRepository { get; }
         IRepository<Item> ItemRepository { get; }
         IRepository<Sale> SaleRepository { get; }
+        IRepository<User> UserRepository { get; }
+        IRepository<UserCredentials> UserCredentialsRepository { get; }
     }
 }
