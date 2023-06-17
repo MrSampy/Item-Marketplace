@@ -49,6 +49,8 @@ namespace Data.Repositories
             return await Context.Sale
                 .Include(x=>x.Status)
                 .Include(x=>x.Item)
+                .Include(x => x.Seller)
+                .Include(x => x.Buyer)
                 .ToListAsync();
         }
 
@@ -62,6 +64,8 @@ namespace Data.Repositories
             return await Context.Sale
                 .Include(x => x.Status)
                 .Include(x => x.Item)
+                .Include(x => x.Seller)
+                .Include(x => x.Buyer)
                 .FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
 
@@ -74,8 +78,8 @@ namespace Data.Repositories
             entityToUpdate.StatusId = entity.StatusId;
             entityToUpdate.CreatedDt = entity.CreatedDt;
             entityToUpdate.FinishedDt = entity.FinishedDt;
-            entityToUpdate.Seller = entity.Seller;
-            entityToUpdate.Buyer = entity.Buyer;
+            entityToUpdate.SellerId = entity.SellerId;
+            entityToUpdate.BuyerId = entity.BuyerId;
 
             Context.SaveChanges();
         }
