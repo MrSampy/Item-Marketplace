@@ -44,18 +44,12 @@ namespace Business.Validation
                 .ForMember(userModel => userModel.SellerSalesIds,
                     user => user.MapFrom(x=>x.SellerSales.Select(x=>x.Id)))
                 .ForMember(userModel => userModel.BuyerSalesIds,
-                    user => user.MapFrom(x => x.BuyerSales.Select(x => x.Id)))
-                .ForMember(userModel => userModel.FullName,
-                    user => user.MapFrom(x=> $"{x.Name} {x.Surname}"));
+                    user => user.MapFrom(x => x.BuyerSales.Select(x => x.Id)));
             CreateMap<UserModel, User>()
                 .ForMember(user => user.SellerSales,
                     userModel => userModel.Ignore())
                 .ForMember(user => user.BuyerSales,
-                    userModel => userModel.Ignore())
-                .ForMember(user => user.Name,
-                    userModel => userModel.MapFrom(x => x.FullName.Split().First()))
-                .ForMember(user => user.Surname,
-                    userModel => userModel.MapFrom(x => x.FullName.Split().Last()));
+                    userModel => userModel.Ignore());
             CreateMap<UserCredentials, UserCredentialsModel>();
             CreateMap<UserCredentialsModel, UserCredentials>()
                 .ForMember(userCredentials => userCredentials.User,
