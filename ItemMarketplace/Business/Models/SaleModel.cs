@@ -9,6 +9,7 @@ namespace Business.Models
 {
     public class SaleModel
     {
+        public int Id { get; set; }
         public int ItemId { get; set; }
         public string ItemName { get; set; }
         public DateTime CreatedDt { get; set; }
