@@ -9,7 +9,9 @@ namespace Business.Models
 {
     public class UserModel
     {
-        public string FullName { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
         public string EmailAddress { get; set; }
         public virtual ICollection<int> SellerSalesIds { get; set; }
         public virtual ICollection<int> BuyerSalesIds { get; set; }
