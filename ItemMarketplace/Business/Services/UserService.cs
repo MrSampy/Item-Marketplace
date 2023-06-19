@@ -16,35 +16,35 @@ namespace Business.Services
     {
         public IUnitOfWork UnitOfWork;
         public IMapper Mapper;
-
-        public UserService(IUnitOfWork unitOfWork, IMapper createMapperProfile)
+        public ICacheService CacheService;
+        public UserService(IUnitOfWork unitOfWork, IMapper createMapperProfile, ICacheService cacheService)
         {
             UnitOfWork = unitOfWork;
             Mapper = createMapperProfile;
+            CacheService = cacheService;
         }
         public async Task AddAsync(UserModel model)
         {
             var validator = new UserValidator(UnitOfWork);
-            var validationResult = await validator.ValidateAsync(model);
+            var validationResult = await validator.ValidateForAddAsync(model);
             if (!validationResult.IsValid)
             {
                 throw new ItemMarketplaceException("Validation failed: " + string.Join(", ", validationResult.Messages));
             }
-
+            ClearCache();
             await UnitOfWork.UserRepository.AddAsync(Mapper.Map<User>(model));
         }
 
         public async Task AddUserCredentials(UserCredentialsModel model)
         {
             var validator = new UserCredentialsValidator(UnitOfWork);
-            var validationResult = await validator.ValidateAsync(model);
+            var validationResult = await validator.ValidateForAddAsync(model);
             if (!validationResult.IsValid)
             {
                 throw new ItemMarketplaceException("Validation failed: " + string.Join(", ", validationResult.Messages));
             }
-            
+            ClearCache();
             model.Password = PasswordHasher.Hash(model.Password);
-
             await UnitOfWork.UserCredentialsRepository.AddAsync(Mapper.Map<UserCredentials>(model));
         }
 
@@ -56,6 +56,7 @@ namespace Business.Services
             {
                 throw new ItemMarketplaceException("Validation failed: " + string.Join(", ", validationResult.Messages));
             }
+            ClearCache();
             await UnitOfWork.UserRepository.DeleteByIdAsync(modelId);
         }
 
@@ -67,12 +68,20 @@ namespace Business.Services
             {
                 throw new ItemMarketplaceException("Validation failed: " + string.Join(", ", validationResult.Messages));
             }
+            ClearCache();
             await UnitOfWork.UserCredentialsRepository.DeleteByIdAsync(id);
         }
 
         public async Task<IEnumerable<UserModel>> GetAllAsync()
         {
-            return Mapper.Map<IEnumerable<UserModel>>(await UnitOfWork.UserRepository.GetAllAsync());
+            var cacheKey = "User:All";
+            var users = CacheService.Get<IEnumerable<UserModel>>(cacheKey);
+            if(users == null)
+            {
+                users = Mapper.Map<IEnumerable<UserModel>>(await UnitOfWork.UserRepository.GetAllWithDetailsAsync());
+                CacheService.Set(cacheKey, users, TimeSpan.FromMinutes(10));
+            }
+            return users;
         }
 
         public async Task<UserModel> GetByIdAsync(int id)
@@ -83,7 +92,14 @@ namespace Business.Services
             {
                 throw new ItemMarketplaceException("Validation failed: " + string.Join(", ", validationResult.Messages));
             }
-            return Mapper.Map<UserModel>(await UnitOfWork.UserRepository.GetByIdWithDetailsAsync(id));
+            var cacheKey = $"User:{id}";
+            var user = CacheService.Get<UserModel>(cacheKey);
+            if (user == null)
+            {
+                user = Mapper.Map<UserModel>(await UnitOfWork.UserRepository.GetByIdWithDetailsAsync(id));
+                CacheService.Set(cacheKey, user, TimeSpan.FromMinutes(10));
+            }
+            return user;
         }
 
         public async Task UpdateAsync(UserModel model)
@@ -94,6 +110,7 @@ namespace Business.Services
             {
                 throw new ItemMarketplaceException("Validation failed: " + string.Join(", ", validationResult.Messages));
             }
+            ClearCache();
             UnitOfWork.UserRepository.Update(Mapper.Map<User>(model));
         }
 
@@ -105,23 +122,13 @@ namespace Business.Services
             {
                 throw new ItemMarketplaceException("Validation failed: " + string.Join(", ", validationResult.Messages));
             }
+            ClearCache();
+            model.Password = PasswordHasher.Hash(model.Password);
             UnitOfWork.UserCredentialsRepository.Update(Mapper.Map<UserCredentials>(model));
         }
-        public async Task<UserModel> GetUserByCredentials(string nickName, string password)
+        public void ClearCache()
         {
-            var model = new UserCredentialsModel
-            {
-                Nickname = nickName,
-                Password = password
-            };
-            var validator = new UserCredentialsValidator(UnitOfWork);
-            var validationResult = await validator.ValidateForLogInAsync(model);
-            if (!validationResult.IsValid)
-            {
-                throw new ItemMarketplaceException("Validation failed: " + string.Join(", ", validationResult.Messages));
-            }
-            var userCredentials = UnitOfWork.UserCredentialsRepository.GetAllAsync().Result.First(x=>x.Nickname.Equals(nickName));
-            return Mapper.Map<UserModel>(UnitOfWork.UserRepository.GetAllAsync().Result.First(x=>x.UserCredentialsId.Equals(userCredentials.Id)));  
+            CacheService.Reset();
         }
     }
 }
