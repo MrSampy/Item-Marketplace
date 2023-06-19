@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Business.Models;
+using Business.Models.Add;
+using Business.Models.Update;
 using Data.Entities;
 using Data.Interfaces;
 
@@ -54,6 +56,12 @@ namespace Business.Validation
             CreateMap<UserCredentialsModel, UserCredentials>()
                 .ForMember(userCredentials => userCredentials.User,
                     userCredentialsModel => userCredentialsModel.Ignore());
+            CreateMap<UserCredentialsToAddModel, UserCredentialsModel>();
+            CreateMap<UserCredentialsToUpdateModel, UserCredentialsModel>();
+            CreateMap<UserToAddModel,UserModel>();
+            CreateMap<UserToUpdateModel, UserModel>();
+            CreateMap<SaleToAddModel, SaleModel>();
+            CreateMap<SaleToUpdateModel, SaleModel>();
         }
     }
 }
