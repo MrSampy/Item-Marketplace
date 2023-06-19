@@ -18,9 +18,9 @@ namespace Business.Validation
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<ValidationResult> ValidateAsync(UserCredentialsModel userCredentials)
+        public async Task<ValidationResult> ValidateForAddAsync(UserCredentialsModel userCredentials)
         {
-            var validationForAdd = ValidateForAdd(userCredentials);
+            var validationForAdd = ValidateAsync(userCredentials);
             var validationExistingUserCredentials = await ValidateExistingUserCredentials(userCredentials);
             return new ValidationResult()
             {
@@ -29,7 +29,7 @@ namespace Business.Validation
             };
         }
 
-        public ValidationResult ValidateForAdd(UserCredentialsModel userCredentials)
+        public ValidationResult ValidateAsync(UserCredentialsModel userCredentials)
         {
             var result = new ValidationResult()
             {
@@ -68,7 +68,7 @@ namespace Business.Validation
 
         public async Task<ValidationResult> ValidateForLogInAsync(UserCredentialsModel model) 
         {
-            var validationResult = ValidateForAdd(model);
+            var validationResult = ValidateAsync(model);
             var result = new ValidationResult()
             {
                 IsValid = true,
@@ -99,7 +99,7 @@ namespace Business.Validation
         public async Task<ValidationResult> ValidateForUpdateAsync(UserCredentialsModel model)
         {
             var validationIdResult = await ValidateIdAsync(model.Id);
-            var validationResult = ValidateForAdd(model);
+            var validationResult = ValidateAsync(model);
 
             return new ValidationResult()
             {
