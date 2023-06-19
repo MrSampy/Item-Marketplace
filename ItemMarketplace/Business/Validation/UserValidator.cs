@@ -17,9 +17,9 @@ namespace Business.Validation
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<ValidationResult> ValidateAsync(UserModel user)
+        public async Task<ValidationResult> ValidateForAddAsync(UserModel user)
         {
-            var validationForAdd = ValidateUserForAdd(user);
+            var validationForAdd = ValidateUser(user);
             var validationExistingUser = await ValidateExistingUser(user);
 
             return new ValidationResult()
@@ -28,7 +28,7 @@ namespace Business.Validation
                 Messages = validationForAdd.Messages.Concat(validationExistingUser.Messages).ToList()
             };
         }
-        public ValidationResult ValidateUserForAdd(UserModel user) 
+        public ValidationResult ValidateUser(UserModel user) 
         {
             var result = new ValidationResult()
             {
@@ -79,7 +79,7 @@ namespace Business.Validation
         public async Task<ValidationResult> ValidateForUpdateAsync(UserModel model)
         {
             var validationIdResult = await ValidateIdAsync(model.Id);
-            var validationResult = ValidateUserForAdd(model);
+            var validationResult = ValidateUser(model);
 
             return new ValidationResult()
             {
@@ -96,7 +96,7 @@ namespace Business.Validation
             };
             
             var existingUser = await unitOfWork.UserRepository.GetByIdAsync(id);
-            if (existingUser != null) 
+            if (existingUser == null) 
             {
                 result.IsValid = false;
                 result.Messages.Add("User not found");
