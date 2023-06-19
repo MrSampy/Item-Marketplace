@@ -12,7 +12,7 @@ namespace Business.Interfaces
 {
     public interface IValidator<TModel> where TModel : class
     {
-        public Task<ValidationResult> ValidateAsync(TModel model);
+        public Task<ValidationResult> ValidateForAddAsync(TModel model);
         public Task<ValidationResult> ValidateIdAsync(int id);
         public Task<ValidationResult> ValidateForUpdateAsync(TModel model);
 
