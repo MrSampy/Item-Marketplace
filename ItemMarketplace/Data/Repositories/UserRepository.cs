@@ -74,7 +74,6 @@ namespace Data.Repositories
             entityToUpdate.Name = entity.Name;
             entityToUpdate.Surname = entity.Surname;
             entityToUpdate.EmailAddress = entity.EmailAddress;
-            entityToUpdate.UserCredentialsId = entity.UserCredentialsId;
             Context.SaveChanges();
         }
     }
