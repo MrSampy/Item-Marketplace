@@ -11,6 +11,7 @@ using Data.Interfaces;
 using Business.Interfaces;
 using Business.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 namespace API
 {
@@ -36,6 +37,8 @@ namespace API
 
             services.AddControllers();
 
+            services.AddApiVersioning();
+
             services.AddDbContext<ItemMarketplaceDBContext>(options => options.UseSqlServer(connection));
 
             services.AddAutoMapper(typeof(AutomapperProfile).Assembly);
@@ -50,11 +53,26 @@ namespace API
             
             services.AddTransient<ICacheService, CacheService>();
 
+            services.AddApiVersioning(setup =>
+            {
+                setup.DefaultApiVersion = new ApiVersion(1, 0);
+                setup.AssumeDefaultVersionWhenUnspecified = true;
+                setup.ReportApiVersions = true;
+            });
+
+            services.AddVersionedApiExplorer(setup =>
+            {
+                setup.GroupNameFormat = "'v'VVV";
+                setup.SubstituteApiVersionInUrl = true;
+            });
+            services.ConfigureOptions<ConfigureSwaggerOptions>();
+
             #region Swagger Configuration
 
 
             services.AddSwaggerGen(swagger =>
             {
+
                 // To Enable authorization using Swagger (JWT)
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
