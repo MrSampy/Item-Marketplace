@@ -95,6 +95,12 @@ namespace Business.Validation
         {
             var validationIdResult = await ValidateIdAsync(model.Id);
             var validationResult = ValidateAsync(model);
+            var validateIds = await ValidateForAddAsync(model);
+            validationIdResult = new ValidationResult()
+            {
+                IsValid = validationIdResult.IsValid && validateIds.IsValid,
+                Messages = validationIdResult.Messages.Concat(validateIds.Messages).ToList()
+            };
 
             return new ValidationResult()
             {

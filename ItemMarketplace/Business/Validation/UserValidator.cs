@@ -81,6 +81,13 @@ namespace Business.Validation
             var validationIdResult = await ValidateIdAsync(model.Id);
             var validationResult = ValidateUser(model);
 
+            var userCredentials = await unitOfWork.UserCredentialsRepository.GetByIdAsync(model.UserCredentialsId);
+            if (userCredentials == null)
+            {
+                validationResult.IsValid = false;
+                validationResult.Messages.Add("User credentials not found");
+            }
+
             return new ValidationResult()
             {
                 IsValid = validationIdResult.IsValid && validationResult.IsValid,

@@ -101,6 +101,13 @@ namespace Business.Validation
             var validationIdResult = await ValidateIdAsync(model.Id);
             var validationResult = ValidateAsync(model);
 
+            var user = await unitOfWork.UserRepository.GetByIdAsync(model.UserId);
+            if (user == null)
+            {
+                validationResult.IsValid = false;
+                validationResult.Messages.Add("User not found");
+            }
+
             return new ValidationResult()
             {
                 IsValid = validationIdResult.IsValid && validationResult.IsValid,
