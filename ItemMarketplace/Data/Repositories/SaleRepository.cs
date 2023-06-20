@@ -74,13 +74,12 @@ namespace Data.Repositories
             var entityToUpdate = Context.Sale.First(x => x.Id.Equals(entity.Id));
 
             entityToUpdate.Price = entity.Price;
-            entityToUpdate.ItemId = entity.ItemId;
-            entityToUpdate.StatusId = entity.StatusId;
             entityToUpdate.CreatedDt = entity.CreatedDt;
             entityToUpdate.FinishedDt = entity.FinishedDt;
+            entityToUpdate.StatusId = entity.StatusId;
+            entityToUpdate.ItemId = entity.ItemId;
             entityToUpdate.SellerId = entity.SellerId;
             entityToUpdate.BuyerId = entity.BuyerId;
-
             Context.SaveChanges();
         }
     }

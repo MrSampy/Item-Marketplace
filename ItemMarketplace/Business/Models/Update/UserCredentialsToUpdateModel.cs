@@ -1,13 +1,12 @@
-﻿using Data.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Models
+namespace Business.Models.Update
 {
-    public class UserCredentialsModel
+    public class UserCredentialsToUpdateModel
     {
         public int Id { get; set; }
         public string Nickname { get; set; }

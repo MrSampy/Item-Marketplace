@@ -1,17 +1,14 @@
-﻿using Data.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Models
+namespace Business.Models.Add
 {
-    public class UserCredentialsModel
+    public class UserCredentialsToAddModel
     {
-        public int Id { get; set; }
         public string Nickname { get; set; }
         public string Password { get; set; }
-        public int UserId { get; set; }
     }
 }

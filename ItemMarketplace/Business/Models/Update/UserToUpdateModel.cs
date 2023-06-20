@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Models
+namespace Business.Models.Update
 {
-    public class ItemModel
+    public class UserToUpdateModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
-        public string MetaData { get; set; }
-        public virtual List<int> SaleIds { get; set; }
+        public string Surname { get; set; }
+        public string EmailAddress { get; set; }
+        public int UserCredentialsId { get; set; }
     }
 }

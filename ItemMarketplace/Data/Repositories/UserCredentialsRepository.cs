@@ -70,7 +70,6 @@ namespace Data.Repositories
             entityToUpdate.Nickname = entity.Nickname;
             entityToUpdate.Password = entity.Password;
             entityToUpdate.UserId = entity.UserId;
-
             Context.SaveChanges();
         }
     }
