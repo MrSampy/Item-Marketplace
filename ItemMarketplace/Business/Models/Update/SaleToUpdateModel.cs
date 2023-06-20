@@ -12,5 +12,9 @@ namespace Business.Models.Update
         public DateTime CreatedDt { get; set; }
         public DateTime FinishedDt { get; set; }
         public decimal Price { get; set; }
+        public int StatusId { get; set; }
+        public int ItemId { get; set; }
+        public int SellerId { get; set; }
+        public int BuyerId { get; set; }
     }
 }

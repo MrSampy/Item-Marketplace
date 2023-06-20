@@ -12,5 +12,6 @@ namespace Business.Models.Update
         public string Name { get; set; }
         public string Surname { get; set; }
         public string EmailAddress { get; set; }
+        public int UserCredentialsId { get; set; }
     }
 }
