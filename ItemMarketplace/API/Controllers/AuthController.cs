@@ -10,7 +10,8 @@ using API.Models;
 using Business.Models;
 namespace API.Controllers
 {
-    [Route("api")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}")]
     [ApiController]
     public class AuthController
     {
@@ -39,6 +40,7 @@ namespace API.Controllers
         }
 
         [AllowAnonymous]
+        [MapToApiVersion("1.0")]
         [HttpPost("login")]
         public async Task<ActionResult> LogIn([FromBody] LoginModel logInModel)
         {

@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class UserController
     {
@@ -27,6 +28,7 @@ namespace API.Controllers
         }
 
         //GET: api/user
+        [MapToApiVersion("1.0")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserModel>>> GetUsers()
         {
@@ -34,6 +36,7 @@ namespace API.Controllers
         }
 
         //GET: api/user/id
+        [MapToApiVersion("1.0")]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<UserModel>> GetSaleById(int id)
         {
@@ -48,6 +51,7 @@ namespace API.Controllers
         }
 
         //POST: api/user
+        [MapToApiVersion("1.0")]
         [HttpPost]
         public async Task<ActionResult> PostUser([FromBody] UserToAddModel model)
         {
@@ -63,6 +67,7 @@ namespace API.Controllers
         }
 
         //POST: api/user/credentials
+        [MapToApiVersion("1.0")]
         [HttpPost("credentials")]
         public async Task<ActionResult> PostUserCredentials([FromBody] UserCredentialsToAddModel model)
         {
@@ -78,6 +83,7 @@ namespace API.Controllers
         }
 
         //PUT: api/user
+        [MapToApiVersion("1.0")]
         [HttpPut]
         public async Task<ActionResult> PutUser([FromBody] UserToUpdateModel model)
         {
@@ -93,6 +99,7 @@ namespace API.Controllers
         }
 
         //PUT: api/user/credentials
+        [MapToApiVersion("1.0")]
         [HttpPut("credentials")]
         public async Task<ActionResult> PutUserCredentials([FromBody] UserCredentialsToUpdateModel model)
         {
@@ -108,6 +115,7 @@ namespace API.Controllers
         }
 
         //DELETE: api/user/id
+        [MapToApiVersion("1.0")]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteUser(int id)
         {
@@ -123,6 +131,7 @@ namespace API.Controllers
         }
 
         //DELETE: api/user/credentials/id
+        [MapToApiVersion("1.0")]
         [HttpDelete("credentials/{id:int}")]
         public async Task<ActionResult> DeleteUserCredentials(int id)
         {

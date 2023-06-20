@@ -10,7 +10,8 @@ using AutoMapper;
 namespace API.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class AuctionsController
     {
@@ -25,6 +26,7 @@ namespace API.Controllers
         }
 
         // GET: api/auctions/id
+        [MapToApiVersion("1.0")]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<SaleModel>> GetSaleById(int id)
         {
@@ -39,6 +41,7 @@ namespace API.Controllers
         }
 
         // GET: api/auctions
+        [MapToApiVersion("1.0")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SaleModel>>> GetSalesByFilter([FromQuery] FilterSerchModel filterSerchModel)
         {
@@ -46,6 +49,7 @@ namespace API.Controllers
         }
 
         // POST: api/auctions
+        [MapToApiVersion("1.0")]
         [HttpPost]
         public async Task<ActionResult> AddSale([FromBody] SaleToAddModel sale) 
         {
@@ -61,6 +65,7 @@ namespace API.Controllers
         }
 
         // PUT: api/auctions
+        [MapToApiVersion("1.0")]
         [HttpPut]
         public async Task<ActionResult> UpdateSale([FromBody] SaleToUpdateModel sale)
         {
@@ -76,6 +81,7 @@ namespace API.Controllers
         }
 
         // DELETE: api/auctions/id
+        [MapToApiVersion("1.0")]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteSale(int id)
         {
