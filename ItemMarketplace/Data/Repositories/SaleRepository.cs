@@ -76,7 +76,10 @@ namespace Data.Repositories
             entityToUpdate.Price = entity.Price;
             entityToUpdate.CreatedDt = entity.CreatedDt;
             entityToUpdate.FinishedDt = entity.FinishedDt;
-
+            entityToUpdate.StatusId = entity.StatusId;
+            entityToUpdate.ItemId = entity.ItemId;
+            entityToUpdate.SellerId = entity.SellerId;
+            entityToUpdate.BuyerId = entity.BuyerId;
             Context.SaveChanges();
         }
     }
